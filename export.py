@@ -34,7 +34,7 @@ import os
 import sys
 import time
 from binascii import hexlify, unhexlify
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 from utils import new_redis_conn
 
@@ -124,7 +124,7 @@ def main(argv):
                         format=logformat,
                         filename=CONF['logfile'],
                         filemode='w')
-    print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
+    print(("Log: {}, press CTRL+C to terminate..".format(CONF['logfile'])))
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])

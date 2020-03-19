@@ -39,8 +39,8 @@ import sys
 import time
 from binascii import unhexlify
 from collections import defaultdict
-from ConfigParser import ConfigParser
-from Queue import PriorityQueue
+from configparser import ConfigParser
+from queue import PriorityQueue
 
 from protocol import (
     HeaderTooShortError,
@@ -99,22 +99,22 @@ class Cache(object):
             self.extract_streams()
         except dpkt.dpkt.NeedData:
             logging.warning("Need data: %s", self.filepath)
-        for stream_id, self.stream.segments in self.streams.iteritems():
+        for stream_id, self.stream.segments in self.streams.items():
             data = self.stream.data()
-            _data = data.next()
+            _data = next(data)
             while True:
                 try:
                     (msg, _data) = self.serializer.deserialize_msg(_data)
                 except (HeaderTooShortError, PayloadTooShortError) as err:
                     logging.debug("%s: %s", stream_id, err)
                     try:
-                        _data += data.next()
+                        _data += next(data)
                     except StopIteration:
                         break
                 except ProtocolError as err:
                     logging.debug("%s: %s", stream_id, err)
                     try:
-                        _data = data.next()
+                        _data = next(data)
                     except StopIteration:
                         break
                 else:
@@ -309,7 +309,7 @@ def main(argv):
                         format=logformat,
                         filename=CONF['logfile'],
                         filemode='a')
-    print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
+    print(("Log: {}, press CTRL+C to terminate..".format(CONF['logfile'])))
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])

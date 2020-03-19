@@ -44,7 +44,7 @@ import socket
 import sys
 import time
 from binascii import hexlify, unhexlify
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 from protocol import ProtocolError, ConnectionError, Connection
 from utils import new_redis_conn, get_keys, ip_to_network
@@ -298,7 +298,7 @@ def cron(pool):
 
             set_bestblockhash()
 
-        for _ in xrange(min(REDIS_CONN.scard('reachable'), pool.free_count())):
+        for _ in range(min(REDIS_CONN.scard('reachable'), pool.free_count())):
             pool.spawn(task)
 
         workers = CONF['workers'] - pool.free_count()
@@ -430,7 +430,7 @@ def main(argv):
                         format=logformat,
                         filename=CONF['logfile'],
                         filemode='a')
-    print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
+    print(("Log: {}, press CTRL+C to terminate..".format(CONF['logfile'])))
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])

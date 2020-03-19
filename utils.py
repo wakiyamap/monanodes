@@ -60,6 +60,6 @@ def ip_to_network(address, prefix):
     """
     Returns CIDR notation to represent the address and its prefix.
     """
-    network = ip_network(unicode("{}/{}".format(address, prefix)),
+    network = ip_network(str("{}/{}".format(address, prefix)),
                          strict=False)
     return "{}/{}".format(network.network_address, prefix)

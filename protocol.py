@@ -147,7 +147,7 @@ import time
 from base64 import b32decode, b32encode
 from binascii import hexlify, unhexlify
 from collections import deque
-from cStringIO import StringIO
+from io import StringIO
 from io import SEEK_CUR
 from operator import itemgetter
 
@@ -418,7 +418,7 @@ class Serializer(object):
 
         msg['count'] = self.deserialize_int(data)
         msg['addr_list'] = []
-        for _ in xrange(msg['count']):
+        for _ in range(msg['count']):
             network_address = self.deserialize_network_address(
                 data, has_timestamp=True)
             msg['addr_list'].append(network_address)
@@ -441,7 +441,7 @@ class Serializer(object):
 
         msg['count'] = self.deserialize_int(data)
         msg['inventory'] = []
-        for _ in xrange(msg['count']):
+        for _ in range(msg['count']):
             inventory = self.deserialize_inventory(data)
             msg['inventory'].append(inventory)
 
@@ -479,18 +479,18 @@ class Serializer(object):
 
         msg['tx_in_count'] = self.deserialize_int(data)
         msg['tx_in'] = []
-        for _ in xrange(msg['tx_in_count']):
+        for _ in range(msg['tx_in_count']):
             tx_in = self.deserialize_tx_in(data)
             msg['tx_in'].append(tx_in)
 
         msg['tx_out_count'] = self.deserialize_int(data)
         msg['tx_out'] = []
-        for _ in xrange(msg['tx_out_count']):
+        for _ in range(msg['tx_out_count']):
             tx_out = self.deserialize_tx_out(data)
             msg['tx_out'].append(tx_out)
 
         if flags != '\x00':
-            for in_num in xrange(msg['tx_in_count']):
+            for in_num in range(msg['tx_in_count']):
                 msg['tx_in'][in_num].update({
                     'wits': self.deserialize_string_vector(data),
                 })
@@ -527,7 +527,7 @@ class Serializer(object):
 
         msg['tx_count'] = self.deserialize_int(data)
         msg['tx'] = []
-        for _ in xrange(msg['tx_count']):
+        for _ in range(msg['tx_count']):
             tx_payload = self.deserialize_tx_payload(data)
             msg['tx'].append(tx_payload)
 
@@ -557,7 +557,7 @@ class Serializer(object):
 
         msg['count'] = self.deserialize_int(data)
         msg['headers'] = []
-        for _ in xrange(msg['count']):
+        for _ in range(msg['count']):
             header = self.deserialize_block_header(data)
             msg['headers'].append(header)
 
@@ -723,7 +723,7 @@ class Serializer(object):
     def deserialize_string_vector(self, data):
         items = []
         count = self.deserialize_int(data)
-        for _ in xrange(count):
+        for _ in range(count):
             items.append(self.deserialize_string(data))
         return items
 
@@ -973,7 +973,7 @@ def main():
         addr_msgs = conn.getaddr()
 
     except (ProtocolError, ConnectionError, socket.error) as err:
-        print("{}: {}".format(err, to_addr))
+        print(("{}: {}".format(err, to_addr)))
 
     print("close")
     conn.close()
@@ -981,7 +981,7 @@ def main():
     if len(handshake_msgs) > 0:
         services = handshake_msgs[0].get('services', 0)
         if services != to_services:
-            print('services ({}) != {}'.format(services, to_services))
+            print(('services ({}) != {}'.format(services, to_services)))
 
     print(handshake_msgs)
     print(addr_msgs)

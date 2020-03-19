@@ -43,7 +43,7 @@ import sys
 import time
 from binascii import hexlify, unhexlify
 from collections import defaultdict
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from decimal import Decimal
 from geoip2.errors import AddressNotFoundError
 
@@ -108,7 +108,7 @@ class Resolve(object):
         Caches resolved addresses in Redis.
         """
         resolved = 0
-        for address, geoip in self.resolved['geoip'].iteritems():
+        for address, geoip in self.resolved['geoip'].items():
             if geoip[1] or geoip[5]:
                 resolved += 1  # country/asn is set
             key = 'resolve:{}'.format(address)
@@ -117,7 +117,7 @@ class Resolve(object):
         logging.info("GeoIP: %d resolved", resolved)
 
         resolved = 0
-        for address, hostname in self.resolved['hostname'].iteritems():
+        for address, hostname in self.resolved['hostname'].items():
             if hostname != address:
                 resolved += 1
             key = 'resolve:{}'.format(address)
@@ -247,7 +247,7 @@ def main(argv):
                         format=logformat,
                         filename=CONF['logfile'],
                         filemode='w')
-    print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
+    print(("Log: {}, press CTRL+C to terminate..".format(CONF['logfile'])))
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])

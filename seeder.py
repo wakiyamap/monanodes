@@ -38,7 +38,7 @@ import requests
 import sys
 import time
 from collections import defaultdict
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 from ipaddress import ip_address, ip_network
 
 from utils import new_redis_conn
@@ -98,7 +98,7 @@ class Seeder(object):
                     "*.{0}.\tIN\tCNAME\t{0}.".format(default_zone),
                 ])
                 addresses = []
-                for services, addrs in self.addresses.iteritems():
+                for services, addrs in self.addresses.items():
                     if services & 1 == 1:  # NODE_NETWORK
                         addresses.extend(addrs)
             else:
@@ -239,7 +239,7 @@ class Seeder(object):
                         continue
                     network = line.split(";")[0].strip()
                     try:
-                        self.blocklist.add(ip_network(unicode(network)))
+                        self.blocklist.add(ip_network(str(network)))
                     except ValueError:
                         continue
             else:
@@ -306,7 +306,7 @@ def main(argv):
                         format=logformat,
                         filename=CONF['logfile'],
                         filemode='w')
-    print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
+    print(("Log: {}, press CTRL+C to terminate..".format(CONF['logfile'])))
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])
