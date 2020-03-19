@@ -363,7 +363,7 @@ def is_excluded(address):
     """
     if address.endswith(".onion"):
         address = onion_to_ipv6(address)
-    elif ip_address(str(address)).is_private:
+    elif ip_address(address).is_private:
         return True
 
     if ":" in address:
@@ -410,11 +410,11 @@ def list_excluded_networks(txt, networks=None):
     """
     if networks is None:
         networks = set()
-    lines = txt.strip().split("\n")
+    lines = txt.splitlines()
     for line in lines:
         line = line.split('#')[0].strip()
         try:
-            network = ip_network(str(line))
+            network = ip_network(line)
         except ValueError:
             continue
         else:
@@ -438,7 +438,7 @@ def update_excluded_networks():
             else:
                 if response.status_code == 200:
                     CONF['exclude_ipv4_networks'] = list_excluded_networks(
-                        response.content,
+                        response.text,
                         networks=CONF['exclude_ipv4_networks'])
                     logging.info("IPv4: %d",
                                  len(CONF['exclude_ipv4_networks']))
@@ -455,7 +455,7 @@ def update_excluded_networks():
             else:
                 if response.status_code == 200:
                     CONF['exclude_ipv6_networks'] = list_excluded_networks(
-                        response.content,
+                        response.text,
                         networks=CONF['exclude_ipv6_networks'])
                     logging.info("IPv6: %d",
                                  len(CONF['exclude_ipv6_networks']))
