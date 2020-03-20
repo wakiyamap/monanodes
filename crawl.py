@@ -132,12 +132,24 @@ def connect(redis_conn, key):
                       user_agent=CONF['user_agent'],
                       height=height,
                       relay=CONF['relay'])
+    print(address)
+    print(int(port))
+    print(CONF['magic_number'])
+    print(CONF['socket_timeout'])
+    print(proxy)
+    print(CONF['protocol_version'])
+    print(CONF['services'])
+    print(CONF['user_agent'])
+    print(height)
+    print(CONF['relay'])
     try:
         logging.debug("Connecting to %s", conn.to_addr)
         conn.open()
         handshake_msgs = conn.handshake()
+        print("OK")
     except (ProtocolError, ConnectionError, socket.error) as err:
         logging.debug("%s: %s", conn.to_addr, err)
+        print("just die")
 
     redis_pipe = redis_conn.pipeline()
     if len(handshake_msgs) > 0:
@@ -468,7 +480,7 @@ def init_conf(argv):
     conf = ConfigParser()
     conf.read(argv[1])
     CONF['logfile'] = conf.get('crawl', 'logfile')
-    CONF['magic_number'] = unhexlify(conf.get('crawl', 'magic_number'))
+    CONF['magic_number'] = bytes.fromhex(conf.get('crawl', 'magic_number'))
     CONF['port'] = conf.getint('crawl', 'port')
     CONF['db'] = conf.getint('crawl', 'db')
     CONF['seeders'] = conf.get('crawl', 'seeders').strip().split("\n")

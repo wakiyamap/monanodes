@@ -4,7 +4,7 @@
 logfile = log/export.fbc0b6db.log
 
 # Network magic number
-magic_number = fbc0b6db
+magic_number = \xfb\xc0\xb6\xdb
 
 # Redis database number
 db = 0
